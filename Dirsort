@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+void swap (string *a, string *b){ //swap strings
+    string val = *a;
+    *a = *b;
+    *b = val;
+}
+void swap (int *a, int *b){ //swap ints
+    int val = *a;
+    *a = *b;
+    *b = val;
+}
+
+string DirSort (string arr[], int size){
+int count = 0;
+int calcSlash [11];
+int i = 0;
+    int n = sizeof(arr) / sizeof (arr[0]);
+
+sort (arr, arr+size, less<string>());
+
+    while (i< size){
+        string presString = arr[i];
+        int count =0;
+        for (int i = 0; i < presString.size(); i++){
+            char presChar = presString[i];
+            if(presChar== '/'){
+                count++;
+            }
+        }
+        calcSlash[i]+= count;
+        i++;
+    }
+    //insertion sort number of slashes
+    
+    for (int i =1 ; i<n; i++){
+        
+        int j= 0;
+        
+        while (calcSlash[j] < calcSlash[j+1]){
+            if (calcSlash[j]> calcSlash[j+1]){
+                swap(calcSlash[j], calcSlash[j+1]);
+                swap(arr[j], arr[j+1]);
+            }
+            j--;
+        }
+        calcSlash[j+1] = calcSlash[i];
+    }
+    for (int i = 0; i< size; i++){
+        cout << arr[i] <<endl;
+    }
+    return "complete";
+}
+
+int main() {
+    string dirSort(string arr[], int size);
+
+    string exampleA[8] = {"/","/usr/","/usr/local/","/usr/local/bin/","/games/","/games/snake/","/homework/","/temp/downloads/"};
+    string exampleB[7] = {"/usr/","/usr/local/","/bin/","/usr/local/bin/","/usr/bin/","/bin/local/","/bin/local/"};
+    string exampleC[8] = {"/","/a/","/b/","/c/","/d/","/e/","/f/","/g/"};
+    string exampleD[11] ={"/","/a/","/b/","/c/","/d/","/e/","/f/","/g/","/a/a/","/b/g/c/","/g/f/"};
+    string exampleE[7] = {"/a/b/c/d/e/f/g/h/i/j/k/l/m/n/","/o/p/q/r/s/t/u/v/w/x/y/z/"};
+    
+    cout << "Example A: " << endl;
+    string exA = DirSort (exampleA, 8);
+   
+    cout << endl << "Example B: "<< endl;
+    string exB = DirSort (exampleB, 7);
+    
+    cout << endl << "Example C: "<< endl;
+    string exC = DirSort (exampleC, 8);
+    
+    cout << endl << "Example D: "<< endl;
+    string exD = DirSort (exampleD, 11);
+   
+    cout << endl << "Example E: "<< endl;
+    string exE = DirSort (exampleE, 7);
+    
+    return 0;
+}
