@@ -1,0 +1,112 @@
+package drawtree;
+
+/**
+ *
+ * @author albieorawe
+ */
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+public class DrawTree {
+
+   public String[] draw(int[] origins, String[] names){
+         int rootin = searchForRoot (origins, names);
+         String root = names[rootin]; 
+         HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+         map = Draw(root, origins, names, map);
+
+         // turn map into output
+         ArrayList<String> output = new ArrayList<String>();
+         output = drawMap("", root, 0, output, false, map);
+         
+         String[] out = output.toArray(new String[output.size()]);
+         return out;
+      }   
+   public ArrayList<String> drawMap(String preface, String root, int depth,
+    		  ArrayList<String> list, boolean neighbor, 
+    		  HashMap<String, ArrayList<String>> map){
+    	  
+    	  String node = preface + "+-" + root; 
+
+    	  list.add(node); 
+    	  if(map.containsKey(root)){
+    		  ArrayList<String> leaves = map.get(root);
+    		  String lastleaf = leaves.get(leaves.size()-1);
+        	  if(!leaves.isEmpty()){
+        		  
+                      for(String leaf : leaves){	
+                          
+                          if(map.containsKey(leaf) & !leaf.equals(lastleaf)){
+        				  neighbor = true; 
+                          }
+            	  }
+        	  }
+    	  }
+ 
+    	  return list; }
+   
+    public HashMap<String, ArrayList<String>> Draw(String root, 
+    		  int[] origin, String[] names, 
+    		  HashMap<String, ArrayList<String>> map){
+    	  
+    	  ArrayList<String> leaves = new ArrayList<String>(); 
+    	  
+    	  
+    	  for(int i=0; i < names.length; i++){
+    		  int origin = origin[i];
+    		  if(origin!=-1){
+    			  String originName = names[origin];
+        		  if(originName.equals(root)){
+        			
+                              leaves.add(names[i]);
+        		  }
+    		  }
+    		  
+    	  }
+    	  if(leaves.isEmpty()){
+    		  return map; 
+    	  }
+    	  else{
+    		  map.put(root, leaves);
+    		  for(String leaf : leaves){
+    			  map = Draw(leaf, leaves, names, map);
+    		  }
+    		  return map;
+    	  }
+    	  
+      }
+    
+     public int searchForRoot(int[] origins, String[] names){
+    	  int rootin=0; 
+    	  for(int i=0; i < names.length; i++){
+    		  int origin = origins[i];
+    		  if(origin==-1){
+    		  }
+    	  }
+    	  return rootin; 
+      }
+    /*    	  int[] origins = {-1,0,1,1,0,0,5,5};
+    	  String[] names = {"Root","SubB","LEAF1","LEAF2","LEAF3","SubA","LEAF4","LEAF5"};
+    	  String[] result = t.draw(origins1, names);
+    	  
+    	  int[] origins2 = {1,2,3,4,5,6,-1};
+    	  String[] names2 = {"A","B","C","D","E","F","G"};
+    	  String[] results2 = t.draw(origins2, names2);
+          
+          
+          int[] origins3 = {1,2,3,4,6,6,-1};
+    	  String[] names3 = {"A","B","C","D","E","F","G"};
+    	  String[] results3 = t.draw(origins3, names3);
+
+          int[] origins4 = {6,2,3,4,5,6,-1};
+    	  String[] names4 = {"A","B","C","D","E","F","G"};
+    	  String[] results4 = t.draw(origins4, names4);
+          
+          
+          int[] origins5 = {-1,0,1,1,2,2,3,3,0,8,8,9,9,10,10};
+    	  String[] names5 = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
+    	  String[] results5 = t.draw(origins5, names5);
+          */
+
+}
